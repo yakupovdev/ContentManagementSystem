@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Data
-public class PostRequest {
+public class PostRequestDTO {
 
     private MultipartFile photo;
 

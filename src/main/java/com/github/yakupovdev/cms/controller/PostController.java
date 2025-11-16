@@ -27,14 +27,14 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping(value = "/generate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<GeneratedPost> generatePost(
-            @Valid @ModelAttribute PostRequest request,
+    public ResponseEntity<GeneratedPostDTO> generatePost(
+            @Valid @ModelAttribute PostRequestDTO request,
             Authentication authentication) {
 
         log.info("Generate post request (without saving) from user: {}",
                 authentication.getName());
 
-        GeneratedPost response = postService.generatePost(
+        GeneratedPostDTO response = postService.generatePost(
                 request,
                 authentication.getName()
         );
@@ -44,13 +44,13 @@ public class PostController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<PostResponse> savePost(
-            @Valid @RequestBody SavePostRequest request,
+    public ResponseEntity<PostResponseDTO> savePost(
+            @Valid @RequestBody SavePostRequestDTO request,
             Authentication authentication) {
 
         log.info("Save post request from user: {}", authentication.getName());
 
-        PostResponse response = postService.saveGeneratedPost(
+        PostResponseDTO response = postService.saveGeneratedPost(
                 request,
                 authentication.getName()
         );
@@ -60,14 +60,14 @@ public class PostController {
 
 
     @PostMapping(value = "/generate-and-save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostResponse> generateAndSavePost(
-            @Valid @ModelAttribute PostRequest request,
+    public ResponseEntity<PostResponseDTO> generateAndSavePost(
+            @Valid @ModelAttribute PostRequestDTO request,
             Authentication authentication) {
 
         log.info("Generate and save post request from user: {}",
                 authentication.getName());
 
-        PostResponse response = postService.generateAndSavePost(
+        PostResponseDTO response = postService.generateAndSavePost(
                 request,
                 authentication.getName()
         );
@@ -77,23 +77,23 @@ public class PostController {
 
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> getUserPosts(Authentication authentication) {
+    public ResponseEntity<List<PostResponseDTO>> getUserPosts(Authentication authentication) {
         log.info("Get posts request from user: {}", authentication.getName());
 
-        List<PostResponse> posts = postService.getUserPosts(authentication.getName());
+        List<PostResponseDTO> posts = postService.getUserPosts(authentication.getName());
 
         return ResponseEntity.ok(posts);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> getPostById(
+    public ResponseEntity<PostResponseDTO> getPostById(
             @PathVariable Long id,
             Authentication authentication) {
 
         log.info("Get post {} request from user: {}", id, authentication.getName());
 
-        PostResponse post = postService.getPostById(id, authentication.getName());
+        PostResponseDTO post = postService.getPostById(id, authentication.getName());
 
         return ResponseEntity.ok(post);
     }
@@ -120,7 +120,7 @@ public class PostController {
         log.info("Get photo for post {} by user: {}", id, authentication.getName());
 
         try {
-            PostResponse post = postService.getPostById(id, authentication.getName());
+            PostResponseDTO post = postService.getPostById(id, authentication.getName());
 
             if (post.getPhotoPath() == null || post.getPhotoPath().isEmpty()) {
                 return ResponseEntity.notFound().build();

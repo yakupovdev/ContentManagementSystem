@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class PostResponse {
+public class PostResponseDTO {
 
     private Long id;
 

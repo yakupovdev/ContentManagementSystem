@@ -1,9 +1,9 @@
 package com.github.yakupovdev.cms.service;
 
-import com.github.yakupovdev.cms.dto.AuthResponse;
-import com.github.yakupovdev.cms.dto.LoginRequest;
-import com.github.yakupovdev.cms.dto.RegisterRequest;
-import com.github.yakupovdev.cms.dto.UserInfoResponse;
+import com.github.yakupovdev.cms.dto.AuthResponseDTO;
+import com.github.yakupovdev.cms.dto.LoginRequestDTO;
+import com.github.yakupovdev.cms.dto.RegisterRequestDTO;
+import com.github.yakupovdev.cms.dto.UserInfoResponseDTO;
 import com.github.yakupovdev.cms.entity.User;
 import com.github.yakupovdev.cms.repository.PostRepository;
 import com.github.yakupovdev.cms.repository.UserRepository;
@@ -25,7 +25,7 @@ public class UserService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponseDTO register(RegisterRequestDTO request) {
         log.info("Registering new user: {}", request.getUsername());
 
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -43,14 +43,14 @@ public class UserService {
 
         String token = jwtUtil.generateToken(user.getUsername());
 
-        return AuthResponse.builder()
+        return AuthResponseDTO.builder()
                 .token(token)
                 .username(user.getUsername())
                 .message("User registered successfully")
                 .build();
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public AuthResponseDTO login(LoginRequestDTO request) {
         log.info("Login attempt for user: {}", request.getUsername());
 
         User user = userRepository.findByUsername(request.getUsername())
@@ -68,14 +68,14 @@ public class UserService {
 
         log.info("User logged in successfully: {}", user.getUsername());
 
-        return AuthResponse.builder()
+        return AuthResponseDTO.builder()
                 .token(token)
                 .username(user.getUsername())
                 .message("Login successful")
                 .build();
     }
 
-    public UserInfoResponse getUserInfo(String username) {
+    public UserInfoResponseDTO getUserInfo(String username) {
         log.info("Fetching user info for: {}", username);
 
         User user = userRepository.findByUsername(username)
@@ -83,7 +83,7 @@ public class UserService {
 
         long totalPosts = postRepository.countByUserId(user.getId());
 
-        return UserInfoResponse.builder()
+        return UserInfoResponseDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .createdAt(user.getCreatedAt())

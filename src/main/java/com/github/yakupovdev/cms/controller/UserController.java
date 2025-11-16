@@ -1,6 +1,6 @@
 package com.github.yakupovdev.cms.controller;
 
-import com.github.yakupovdev.cms.dto.UserInfoResponse;
+import com.github.yakupovdev.cms.dto.UserInfoResponseDTO;
 import com.github.yakupovdev.cms.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +18,10 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserInfoResponse> getCurrentUser(Authentication authentication) {
+    public ResponseEntity<UserInfoResponseDTO> getCurrentUser(Authentication authentication) {
         log.info("Fetching user info for: {}", authentication.getName());
 
-        UserInfoResponse userInfo = userService.getUserInfo(authentication.getName());
+        UserInfoResponseDTO userInfo = userService.getUserInfo(authentication.getName());
 
         return ResponseEntity.ok(userInfo);
     }

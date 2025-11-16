@@ -1,6 +1,6 @@
 package com.github.yakupovdev.cms.service;
 
-import com.github.yakupovdev.cms.dto.PostRequest;
+import com.github.yakupovdev.cms.dto.PostRequestDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -38,7 +38,7 @@ public class OpenAIService {
     }
 
 
-    public String generatePostDescription(PostRequest request) {
+    public String generatePostDescription(PostRequestDTO request) {
         log.info("Generating post description with GPT-4o");
 
         boolean hasPhoto = request.getPhoto() != null && !request.getPhoto().isEmpty();
@@ -86,7 +86,7 @@ public class OpenAIService {
     }
 
 
-    private ObjectNode buildRequestBody(String prompt, PostRequest request)
+    private ObjectNode buildRequestBody(String prompt, PostRequestDTO request)
             throws Exception {
 
         ObjectNode root = objectMapper.createObjectNode();
@@ -196,7 +196,7 @@ public class OpenAIService {
     }
 
 
-    private String buildPrompt(PostRequest request) {
+    private String buildPrompt(PostRequestDTO request) {
         StringBuilder prompt = new StringBuilder();
         prompt.append("Create an Instagram post description");
 
@@ -236,7 +236,7 @@ public class OpenAIService {
         return prompt.toString();
     }
 
-    private String getSizeDescription(PostRequest.DescriptionSize size) {
+    private String getSizeDescription(PostRequestDTO.DescriptionSize size) {
         return switch (size) {
             case SHORT -> "SHORT (1-2 sentences, max 50 words)";
             case MEDIUM -> "MEDIUM (3-5 sentences, 50-150 words)";
@@ -244,7 +244,7 @@ public class OpenAIService {
         };
     }
 
-    private int getMaxTokensBySize(PostRequest.DescriptionSize size) {
+    private int getMaxTokensBySize(PostRequestDTO.DescriptionSize size) {
         return switch (size) {
             case SHORT -> 200;
             case MEDIUM -> 500;

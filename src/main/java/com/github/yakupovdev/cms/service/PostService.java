@@ -37,7 +37,7 @@ public class PostService {
     private String tempUploadDirectory;
 
 
-    public GeneratedPostDTO generatePost(PostRequest request, String username) {
+    public GeneratedPostDTO generatePost(PostRequestDTO request, String username) {
         log.info("Generating post (without saving) for user: {}", username);
 
         String tempPhotoPath = null;
@@ -68,7 +68,7 @@ public class PostService {
 
 
     @Transactional
-    public PostResponse saveGeneratedPost(SavePostRequest request, String username) {
+    public PostResponseDTO saveGeneratedPost(SavePostRequestDTO request, String username) {
         log.info("Saving generated post for user: {}", username);
 
         User user = userRepository.findByUsername(username)
@@ -102,7 +102,7 @@ public class PostService {
 
 
     @Transactional
-    public PostResponse generateAndSavePost(PostRequest request, String username) {
+    public PostResponseDTO generateAndSavePost(PostRequestDTO request, String username) {
         log.info("Generating and saving post for user: {}", username);
 
         User user = userRepository.findByUsername(username)
@@ -141,7 +141,7 @@ public class PostService {
 
 
     @Transactional(readOnly = true)
-    public List<PostResponse> getUserPosts(String username) {
+    public List<PostResponseDTO> getUserPosts(String username) {
         log.info("Fetching posts for user: {}", username);
 
         User user = userRepository.findByUsername(username)
@@ -158,7 +158,7 @@ public class PostService {
 
 
     @Transactional(readOnly = true)
-    public PostResponse getPostById(Long postId, String username) {
+    public PostResponseDTO getPostById(Long postId, String username) {
         log.info("Fetching post {} for user: {}", postId, username);
 
         User user = userRepository.findByUsername(username)
@@ -291,8 +291,8 @@ public class PostService {
     }
 
 
-    private PostResponse mapToResponse(Post post) {
-        return PostResponse.builder()
+    private PostResponseDTO mapToResponse(Post post) {
+        return PostResponseDTO.builder()
                 .id(post.getId())
                 .generatedDescription(post.getGeneratedDescription())
                 .originalDescription(post.getOriginalDescription())

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class SavePostRequest {
+public class SavePostRequestDTO {
 
     @NotBlank(message = "Generated description is required")
     private String generatedDescription;
